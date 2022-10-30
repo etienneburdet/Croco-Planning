@@ -1,0 +1,46 @@
+:root {
+    --blue-700: #485fc7;
+    --grey-300: #cbd5e1;
+    --border-radius: 4px;
+    --spacing-100: 16px;
+    --spacing-50: 8px;
+    --spacing-25: 4px;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.button {
+    background: transparent;
+    border: 1px solid var(--grey-300);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-50);
+}
+
+.input,
+.input:focus {
+    border: none;
+    outline: none;
+    border-bottom: 1px solid black;
+    padding: 0.25em 0;
+    font-size: 1rem;
+}
+
+.input:focus, 
+.input:active {
+    border-color: var(--blue-700);
+}
+
+.field {
+    display: inline-flex;
+    align-items: baseline;
+    font-size: 1rem;
+    margin: 0.75em 0;
+}
+
+.field label {
+    margin-right: var(--spacing-50)
+}

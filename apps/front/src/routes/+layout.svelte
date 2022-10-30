@@ -1,7 +1,11 @@
 <script lang="ts">
 	import { supabaseClient } from '$lib/supabaseClient';
+	import type { AuthSession } from '@supabase/supabase-js';
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import Nav from './Nav.svelte';
+
+	export let data: import('./$types').PageData;
 
 	onMount(() => {
 		const {
@@ -16,6 +20,15 @@
 	});
 </script>
 
-<div class="container" style="padding: 50px 0 100px 0">
+<Nav session={data.session} />
+<div>
 	<slot />
 </div>
+
+<style>
+	div {
+		height: 100%;
+		width: 100%;
+		padding: var(--spacing-50);
+	}
+</style>

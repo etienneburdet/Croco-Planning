@@ -20,20 +20,42 @@
 	};
 </script>
 
-<form class="row flex-center flex" on:submit|preventDefault={handleLogin}>
-	<div class="col-6 form-widget">
-		<h1 class="header">Supabase + SvelteKit</h1>
-		<p class="description">Sign in via magic link with your email below</p>
-		<div>
-			<input class="inputField" type="email" placeholder="Your email" bind:value={email} />
-		</div>
-		<div>
-			<input
-				type="submit"
-				class="button block"
-				value={loading ? 'Loading' : 'Send magic link'}
-				disabled={loading}
-			/>
-		</div>
+<form on:submit|preventDefault={handleLogin}>
+	<div id="form-fields">
+		<h1>Les crocos</h1>
+		<p>Entre ton mail pour recevoir un lien de connexion 🐊</p>
+		<input class="input" type="email" placeholder="Your email" bind:value={email} />
+		<input
+			class="button"
+			type="submit"
+			value={loading ? 'Loading' : 'Recevoir le lien'}
+			disabled={loading}
+		/>
 	</div>
 </form>
+
+<style>
+	form {
+		height: 100%;
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-top: 10vh;
+	}
+
+	#form-fields {
+		border: 1px solid var(--grey-300);
+		border-radius: var(--border-radius);
+		padding: var(--spacing-100);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	input {
+		font-size: 1rem;
+		width: 100%;
+		margin: 0.75em 0;
+	}
+</style>

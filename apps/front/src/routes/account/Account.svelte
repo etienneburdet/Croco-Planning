@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { AuthSession } from '@supabase/supabase-js';
+	import { page } from '$app/stores';
 	import { supabaseClient } from '$lib/supabaseClient';
 
 	export let session: AuthSession;
@@ -16,7 +17,6 @@
 
 	const getProfile = async () => {
 		try {
-			loading = true;
 			const { user } = session;
 
 			const { data, error, status } = await supabaseClient
@@ -41,7 +41,7 @@
 		}
 	};
 
-	async function updateProfile() {
+	const updateProfile = async () => {
 		try {
 			loading = true;
 			const { user } = session;
@@ -64,47 +64,35 @@
 		} finally {
 			loading = false;
 		}
-	}
-
-	async function signOut() {
-		try {
-			loading = true;
-			let { error } = await supabaseClient.auth.signOut();
-			if (error) throw error;
-		} catch (error) {
-			if (error instanceof Error) {
-				alert(error.message);
-			}
-		} finally {
-			loading = false;
-		}
-	}
+	};
 </script>
 
-<form class="form-widget" on:submit|preventDefault={updateProfile}>
-	<div>
+<form on:submit|preventDefault={updateProfile}>
+	<div class="field">
 		<label for="email">Email</label>
-		<input id="email" type="text" value={session.user.email} disabled />
+		<input class="input" id="email" type="text" value={session.user.email} disabled />
 	</div>
-	<div>
+	<div class="field">
 		<label for="username">Name</label>
-		<input id="username" type="text" bind:value={username} />
+		<input class="input" id="username" type="text" bind:value={username} />
 	</div>
-	<div>
+	<div class="field">
 		<label for="website">Website</label>
-		<input id="website" type="website" bind:value={website} />
+		<input class="input" id="website" type="website" bind:value={website} />
 	</div>
 
-	<div>
-		<input
-			type="submit"
-			class="button block primary"
-			value={loading ? 'Loading...' : 'Update'}
-			disabled={loading}
-		/>
-	</div>
-
-	<div>
-		<button class="button block" on:click={signOut} disabled={loading}> Sign Out </button>
-	</div>
+	<input
+		class="button"
+		type="submit"
+		value={loading ? 'Loading...' : 'Update'}
+		disabled={loading}
+	/>
 </form>
+
+<style>
+	form {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+</style>
