@@ -3,13 +3,27 @@
 
 	let loading = false;
 	let email: string;
+	let password: string;
 
-	const handleLogin = async () => {
+	const loginPw = async () => {
+		try {
+			loading = true;
+			const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+			if (error) throw error;
+		} catch (error) {
+			if (error instanceof Error) {
+				alert(error.message);
+			}
+		} finally {
+			loading = false;
+		}
+	};
+
+	const loginMagic = async () => {
 		try {
 			loading = true;
 			const { error } = await supabaseClient.auth.signInWithOtp({ email });
 			if (error) throw error;
-			alert('Check your email for the login link!');
 		} catch (error) {
 			if (error instanceof Error) {
 				alert(error.message);
@@ -20,11 +34,26 @@
 	};
 </script>
 
-<form on:submit|preventDefault={handleLogin}>
+<!-- <form on:submit|preventDefault={loginMagic}>
 	<div id="form-fields">
 		<h1>Les crocos</h1>
 		<p>Entre ton mail pour recevoir un lien de connexion 🐊</p>
-		<input class="input" type="email" placeholder="Your email" bind:value={email} />
+		<input class="input" type="email" placeholder="e-mail" bind:value={email} />
+		<input
+			class="button"
+			type="submit"
+			value={loading ? 'Loading' : 'Recevoir le lien'}
+			disabled={loading}
+		/>
+	</div>
+</form> -->
+
+<form on:submit|preventDefault={loginPw}>
+	<div id="form-fields">
+		<h1>Les crocos</h1>
+		<p>Entre ton mail et ton mot de passe 🐊</p>
+		<input class="input" type="email" placeholder="e-mail" bind:value={email} />
+		<input class="input" type="password" placeholder="Mot de pass" bind:value={password} />
 		<input
 			class="button"
 			type="submit"

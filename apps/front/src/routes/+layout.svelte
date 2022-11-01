@@ -1,9 +1,10 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { supabaseClient } from '$lib/supabaseClient';
-	import type { AuthSession } from '@supabase/supabase-js';
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import Nav from './Nav.svelte';
+	import Auth from './Auth.svelte';
 
 	export let data: import('./$types').PageData;
 
@@ -20,9 +21,13 @@
 	});
 </script>
 
-<Nav session={data.session} />
 <div>
-	<slot />
+	{#if !$page.data.session}
+		<Auth />
+	{:else}
+		<Nav session={data.session} />
+		<slot />
+	{/if}
 </div>
 
 <style>
