@@ -1,15 +1,23 @@
 :root {
     --blue-700: #485fc7;
+    --green-400: #22c55e;
+    --green-600: #16a34a;
     --grey-300: #cbd5e1;
     --border-radius: 4px;
     --spacing-100: 16px;
     --spacing-50: 8px;
     --spacing-25: 4px;
+
+    --box-shadow-100: 3px 3px 0 0 black;
 }
 
 /* Default to border-box, manually over-rides if needed */
 * {
     box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
 }
 
 body {
@@ -24,18 +32,31 @@ body {
     padding: var(--spacing-50);
 }
 
+button.link {
+    text-decoration: underline;
+    background: transparent;
+    border: none;
+}
+
+.button, .link {
+    cursor: pointer;
+}
+
 .input,
 .input:focus {
     border: none;
     outline: none;
     border-bottom: 1px solid black;
-    padding: 0.25em 0;
+    padding: 0.25em 1em;
     font-size: 1rem;
 }
 
 .input:focus, 
 .input:active {
-    border-color: var(--blue-700);
+    border-color: var(--green-600);
+    border-radius: 2px;
+    border: 1px solid var(--green-600);
+    box-shadow: 1px 1px 0 0 var(--green-600);
 }
 
 .field {

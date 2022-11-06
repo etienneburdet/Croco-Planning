@@ -1,9 +1,13 @@
 <script lang="ts">
+	import { slide } from 'svelte/transition';
 	import { supabaseClient } from '$lib/supabaseClient';
+	import DottedBackground from '$lib/DottedBackground.svelte';
 
 	let loading = false;
 	let email: string;
-	let password: string;
+	let password: string = '';
+
+	let isLoginPw: boolean = false;
 
 	const loginPw = async () => {
 		try {
@@ -32,59 +36,67 @@
 			loading = false;
 		}
 	};
+
+	const toggleLoginMethod = () => (isLoginPw = !isLoginPw);
+
+	$: createPw = password.length === 0;
 </script>
 
-<!-- <form on:submit|preventDefault={loginMagic}>
-	<div id="form-fields">
-		<h1>Les crocos</h1>
-		<p>Entre ton mail pour recevoir un lien de connexion 🐊</p>
-		<input class="input" type="email" placeholder="e-mail" bind:value={email} />
-		<input
-			class="button"
-			type="submit"
-			value={loading ? 'Loading' : 'Recevoir le lien'}
-			disabled={loading}
-		/>
-	</div>
-</form> -->
-
-<form on:submit|preventDefault={loginPw}>
-	<div id="form-fields">
-		<h1>Les crocos</h1>
-		<p>Entre ton mail et ton mot de passe 🐊</p>
-		<input class="input" type="email" placeholder="e-mail" bind:value={email} />
-		<input class="input" type="password" placeholder="Mot de pass" bind:value={password} />
-		<input
-			class="button"
-			type="submit"
-			value={loading ? 'Loading' : 'Recevoir le lien'}
-			disabled={loading}
-		/>
-	</div>
-</form>
+<DottedBackground>
+	<form on:submit|preventDefault={isLoginPw ? loginPw : loginMagic}>
+		<div id="form-fields">
+			<h1>Les crocos</h1>
+			<span>{isLoginPw ? 'Entre ton mail 🐊' : 'Entre ton mail et ton mot de passe🐊'}</span>
+			<input class="input" type="email" placeholder="e-mail" bind:value={email} />
+			{#if isLoginPw}
+				<input
+					transition:slide
+					class="input password"
+					class:isLoginPw
+					type="password"
+					placeholder="Mot de passe"
+					bind:value={password}
+				/>
+			{/if}
+			<input
+				class="button"
+				type="submit"
+				value={isLoginPw && createPw ? '(Ré)-initialiser le mot de passe' : 'Connextion'}
+				disabled={loading}
+			/>
+			<button class="link" on:click={toggleLoginMethod} on:keypress={toggleLoginMethod}>
+				{isLoginPw ? 'Ne pas utiliser de mot de passe' : 'Utiliser un mot de passe'}
+			</button>
+		</div>
+	</form>
+</DottedBackground>
 
 <style>
 	form {
 		height: 100%;
 		width: 100%;
+		padding-top: 10vh;
 		display: flex;
 		justify-content: center;
-		align-items: center;
-		margin-top: 10vh;
+		align-items: flex-start;
 	}
 
 	#form-fields {
+		background: white;
+		max-width: 320px;
 		border: 1px solid var(--grey-300);
 		border-radius: var(--border-radius);
 		padding: var(--spacing-100);
-		display: flex;
-		flex-direction: column;
-		align-items: center;
+		box-shadow: var(--box-shadow-100);
 	}
 
 	input {
 		font-size: 1rem;
 		width: 100%;
 		margin: 0.75em 0;
+	}
+
+	.link {
+		font-size: 0.75rem;
 	}
 </style>

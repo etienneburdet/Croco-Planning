@@ -1,8 +1,5 @@
 <script lang="ts">
-	import type { AuthSession } from '@supabase/supabase-js';
 	import { supabaseClient } from '$lib/supabaseClient';
-
-	export let session: AuthSession;
 
 	let loading = false;
 	let password: string = '';
